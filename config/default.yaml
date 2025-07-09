@@ -1,0 +1,59 @@
+# 语衡项目配置文件
+# 模型配置
+model:
+  name: "yuheng_multimodal"
+  text_encoder: "google-bert/bert-base-chinese"
+  image_encoder: "resnet50"
+  hidden_size: 768
+  num_classes: 2
+  dropout: 0.1
+  fusion_method: "concat"  # concat, attention, cross_attention
+
+# 训练配置
+training:
+  batch_size: 32
+  learning_rate: 0.00002
+  num_epochs: 10
+  warmup_steps: 500
+  gradient_accumulation_steps: 1
+  max_grad_norm: 1.0
+  weight_decay: 0.01
+  save_steps: 500
+  eval_steps: 100
+  logging_steps: 50
+
+# 数据配置
+data:
+  # 数据文件路径
+  train_path: "result.json"
+  val_path: "result.json"
+  test_path: "result.json"
+  
+  # 数据分割比例（当使用同一文件时）
+  split_ratios:
+    train: 0.7    # 70% 训练集
+    val: 0.15     # 15% 验证集
+    test: 0.15    # 15% 测试集
+  
+  # 其他数据配置
+  max_seq_length: 512
+  image_size: 224
+  num_workers: 4
+
+# 模块配置
+modules:
+  y_cert:
+    enabled: true
+    threshold: 0.8
+  attack_track:
+    enabled: true
+    detection_methods: ["adversarial", "backdoor"]
+  msa:
+    enabled: true
+    attack_types: ["text", "image", "multimodal"]
+
+# 其他配置
+device: "cuda"
+seed: 42
+output_dir: "checkpoints"
+log_dir: "logs" 
